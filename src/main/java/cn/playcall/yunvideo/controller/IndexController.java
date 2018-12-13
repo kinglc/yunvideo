@@ -54,6 +54,8 @@ public class IndexController {
 
         redisClient.opsForValue().set(sessionKey,userInfo.getOpenId(),60*10, TimeUnit.SECONDS);
         resultJson.put("sessionId",sessionKey);
+        resultJson.put("code","000");
+        resultJson.put("desc","登录成功");
 
         return new ResponseEntity<JSONObject>(resultJson, HttpStatus.OK);
     }
