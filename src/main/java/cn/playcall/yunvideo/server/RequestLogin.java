@@ -6,8 +6,8 @@ import org.springframework.web.client.RestTemplate;
 
 public class RequestLogin {
 
-    private static String appId = "wxf33c27bb4516dba5";
-    private static String secret = "c0b5fd7775b8f5576c10390777b91361";
+    private static String appId = "wxcd8c6f7bfa845f64";
+    private static String secret = "7becddc112cd3bb97f49c4237e58bbe9";
 
     public static JSONObject getLoginOpenId(String code){
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid="+appId+"&secret="+secret+"&js_code="+code+"&grant_type=authorization_code";

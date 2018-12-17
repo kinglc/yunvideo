@@ -14,6 +14,8 @@ public class Task {
     private String openId;
     @Column(name = "fileName")
     private String fileName;
+    @Column(name = "targetFormat")
+    private String targetFormat;
     @Column(name = "fileId")
     private String fileId;
     @Column(name = "status")
@@ -31,6 +33,14 @@ public class Task {
 
     public String getOpenId() {
         return openId;
+    }
+
+    public String getTargetFormat() {
+        return targetFormat;
+    }
+
+    public void setTargetFormat(String targetFormat) {
+        this.targetFormat = targetFormat;
     }
 
     public void setOpenId(String openId) {
@@ -75,6 +85,7 @@ public class Task {
                 "id=" + id +
                 ", openId='" + openId + '\'' +
                 ", fileName='" + fileName + '\'' +
+                ", targetFormat='" + targetFormat + '\'' +
                 ", fileId='" + fileId + '\'' +
                 ", status='" + status + '\'' +
                 ", time='" + time + '\'' +

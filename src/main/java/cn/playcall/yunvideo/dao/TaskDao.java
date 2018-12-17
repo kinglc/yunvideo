@@ -12,4 +12,6 @@ import java.util.List;
 public interface TaskDao extends JpaRepository<Task,Integer> {
 
     public List<Task> findAllByOpenId(String openId);
+
+    public Task findByOpenIdAndFileId(String openId,String fileId);
 }
