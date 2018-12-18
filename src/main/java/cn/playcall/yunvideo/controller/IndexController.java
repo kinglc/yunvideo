@@ -130,7 +130,8 @@ public class IndexController {
         receiveFile.flush();
         receiveFile.close();
         taskDao.save(task);
-        new Thread(new ChangeFormat(path1+"/"+fileName,path2+"/"+fileName.split("\\.")[0]+"."+targetFormat)).start();
+        task = taskDao.findByOpenIdAndFileId(task.getOpenId(),task.getFileId());
+        new Thread(new ChangeFormat(path1+"/"+fileName,path2+"/"+fileName.split("\\.")[0]+"."+targetFormat,task,taskDao)).start();
         return new ResponseEntity<JSONObject>(resultJson,HttpStatus.OK);
     }
 
