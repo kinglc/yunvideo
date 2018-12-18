@@ -163,7 +163,7 @@ public class IndexController {
             out.close();
             return ;
         }
-        File file = new File(System.getProperty("user.dir")+"/src/main/resources/static/user/"+openId+"/download/"+fileId+"/"+task.getFileName());
+        File file = new File(System.getProperty("user.dir")+"/src/main/resources/static/user/"+openId+"/download/"+fileId+"/"+(task.getFileName()).split("\\.")[0]+"."+task.getTargetFormat());
         response.setContentType("application/force-download");
         response.addHeader("Content-Disposition","attachment;fileName="+task.getFileName());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
