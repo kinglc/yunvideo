@@ -5,6 +5,7 @@ import cn.playcall.yunvideo.dao.UserDao;
 import cn.playcall.yunvideo.entity.Task;
 import cn.playcall.yunvideo.entity.UserInfo;
 import cn.playcall.yunvideo.server.RequestLogin;
+import cn.playcall.yunvideo.thread.ChangeFormat;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,9 +114,13 @@ public class IndexController {
         task.setTargetFormat(targetFormat);
         task.setTime(getCutTime());
 
-        File userStoragePath = new File("./src/main/resources/static/user/"+openId+"/upload/"+fileId);
+        String path1 = System.getProperty("user.dir")+"/src/main/resources/static/user/"+openId+"/upload/"+fileId;
+        String path2 = System.getProperty("user.dir")+"/src/main/resources/static/user/"+openId+"/download/"+fileId;
+        File userStoragePath = new File(path1);
+        File userDownloadPath = new File(path2);
         if (!userStoragePath.exists()){
             userStoragePath.mkdirs();
+            userDownloadPath.mkdirs();
         }
 
         File path = new File(userStoragePath+"/"+fileName);
@@ -125,7 +130,7 @@ public class IndexController {
         receiveFile.flush();
         receiveFile.close();
         taskDao.save(task);
-
+        new Thread(new ChangeFormat(path1+"/"+fileName,path2+"/"+fileName.split("\\.")[0]+"."+targetFormat)).start();
         return new ResponseEntity<JSONObject>(resultJson,HttpStatus.OK);
     }
 
@@ -157,7 +162,7 @@ public class IndexController {
             out.close();
             return ;
         }
-        File file = new File("./src/main/resources/static/user/"+openId+"/download/"+fileId+"/"+task.getFileName());
+        File file = new File(System.getProperty("user.dir")+"/src/main/resources/static/user/"+openId+"/download/"+fileId+"/"+task.getFileName());
         response.setContentType("application/force-download");
         response.addHeader("Content-Disposition","attachment;fileName="+task.getFileName());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
