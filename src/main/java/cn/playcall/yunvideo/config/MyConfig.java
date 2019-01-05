@@ -10,6 +10,6 @@ public class MyConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        registry.addResourceHandler("/user/**").addResourceLocations("file:/home/shop/src/main/resources/static/");
+        registry.addResourceHandler("/user/**").addResourceLocations("file:"+System.getProperty("user.dir")+"/src/main/resources/static/user");
     }
 }

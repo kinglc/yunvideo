@@ -132,6 +132,8 @@ public class IndexController {
         taskDao.save(task);
         task = taskDao.findByOpenIdAndFileId(task.getOpenId(),task.getFileId());
         new Thread(new ChangeFormat(path1+"/"+fileName,path2+"/"+fileName.split("\\.")[0]+"."+targetFormat,task,taskDao)).start();
+        resultJson.put("code","000");
+        resultJson.put("desc","上传成功");
         return new ResponseEntity<JSONObject>(resultJson,HttpStatus.OK);
     }
 
@@ -177,6 +179,34 @@ public class IndexController {
         }
         downloadFile.close();
         return ;
+    }
+
+    @RequestMapping(value = "/q_taskStatus/{fileId}")
+    public void getTaskStatus(HttpServletRequest request,HttpServletResponse response,@PathVariable String fileId) throws IOException {
+        String sessionKey = request.getHeader("sessionId");
+        String openId = redisClient.opsForValue().get(sessionKey);
+        Task task = taskDao.findByOpenIdAndFileId(openId,fileId);
+        if (task.getStatus().equals("0")){
+            JSONObject resultJson = new JSONObject();
+            resultJson.put("code","006");
+            resultJson.put("desc","视频正在转码");
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/json;charset=utf-8");
+            PrintWriter out = response.getWriter();
+            out.append(resultJson.toString());
+            out.close();
+            return ;
+        }else {
+            JSONObject resultJson = new JSONObject();
+            resultJson.put("code","000");
+            resultJson.put("desc","视频转码完成");
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/json;charset=utf-8");
+            PrintWriter out = response.getWriter();
+            out.append(resultJson.toString());
+            out.close();
+            return ;
+        }
     }
 
     private String getCutTime(){
